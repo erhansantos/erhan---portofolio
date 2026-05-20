@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Erhan Adi Santoso — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #080808;
+  --surface: #0f0f0f;
+  --surface2: #161616;
+  --border: #1e1e1e;
+  --accent: #f97316;
+  --accent2: #fb923c;
+  --gold: #fbbf24;
+  --text: #f0ede8;
+  --muted: #666;
+  --muted2: #444;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.1s;
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  width: 32px; height: 32px;
+  border: 1px solid rgba(249,115,22,0.5);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transition: all 0.15s ease;
+}
+
+/* NOISE OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.4;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 24px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to bottom, rgba(8,8,8,0.95), transparent);
+}
+
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  letter-spacing: 3px;
+  color: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover { color: var(--text); }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 120px 60px 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  top: -300px; right: -200px;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.hero-content { position: relative; z-index: 2; }
+
+.hero-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.2s ease forwards;
+}
+
+.hero-tag::before {
+  content: '';
+  width: 30px; height: 1px;
+  background: var(--accent);
+}
+
+.hero-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 9vw, 120px);
+  line-height: 0.9;
+  letter-spacing: 2px;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.3s ease forwards;
+}
+
+.hero-name span { color: var(--accent); display: block; }
+
+.hero-tagline {
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 420px;
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.4s ease forwards;
+}
+
+.hero-tagline strong { color: var(--text); font-weight: 400; }
+
+.hero-cta {
+  display: flex;
+  gap: 16px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.5s ease forwards;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #000;
+  padding: 14px 32px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s;
+  display: inline-block;
+}
+
+.btn-primary:hover {
+  background: var(--gold);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 14px 32px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s;
+  display: inline-block;
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+/* HERO IMAGE */
+.hero-image {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  opacity: 0;
+  animation: fadeIn 1s 0.6s ease forwards;
+}
+
+.hero-image-frame {
+  position: relative;
+  width: 380px;
+}
+
+.hero-image-frame::before {
+  content: '';
+  position: absolute;
+  top: -20px; right: -20px;
+  width: 100%; height: 100%;
+  border: 1px solid rgba(249,115,22,0.2);
+  z-index: 0;
+}
+
+.hero-image-frame::after {
+  content: '';
+  position: absolute;
+  bottom: -20px; left: -20px;
+  width: 60%; height: 60%;
+  border: 1px solid rgba(249,115,22,0.1);
+  z-index: 0;
+}
+
+.hero-img {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  object-position: top;
+  position: relative;
+  z-index: 1;
+  filter: grayscale(20%) contrast(1.05);
+}
+
+.hero-stats {
+  position: absolute;
+  bottom: -40px;
+  left: -60px;
+  display: flex;
+  gap: 2px;
+  z-index: 2;
+}
+
+.stat-box {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 20px 24px;
+  text-align: center;
+}
+
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  color: var(--accent);
+  line-height: 1;
+  display: block;
+}
+
+.stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  display: block;
+  margin-top: 4px;
+}
+
+/* SCROLL INDICATOR */
+.scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 60px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--muted2);
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fadeUp 0.8s 1s ease forwards;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  animation: scrollLine 2s infinite;
+}
+
+/* SECTIONS */
+section {
+  padding: 120px 60px;
+  position: relative;
+}
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-label::before {
+  content: '';
+  width: 20px; height: 1px;
+  background: var(--accent);
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 6vw, 80px);
+  letter-spacing: 2px;
+  line-height: 1;
+  margin-bottom: 60px;
+}
+
+/* ABOUT */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.about-text p {
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+.about-text p strong { color: var(--text); font-weight: 400; }
+
+.about-numbers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+
+.about-num-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 32px;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.about-num-card:hover {
+  border-color: var(--accent);
+  background: var(--surface2);
+}
+
+.about-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 56px;
+  color: var(--accent);
+  line-height: 1;
+  display: block;
+}
+
+.about-num-label {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+/* SKILLS */
+.skills-section { background: var(--surface); }
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.skill-card {
+  background: var(--bg);
+  padding: 40px;
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 0; height: 2px;
+  background: var(--accent);
+  transition: width 0.4s ease;
+}
+
+.skill-card:hover::before { width: 100%; }
+.skill-card:hover { background: var(--surface2); }
+
+.skill-icon { font-size: 36px; margin-bottom: 20px; }
+
+.skill-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.skill-desc {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.skill-level {
+  margin-top: 20px;
+  height: 1px;
+  background: var(--border);
+  position: relative;
+}
+
+.skill-level-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  transition: width 1.5s ease;
+}
+
+/* EXPERIENCE */
+.exp-timeline {
+  position: relative;
+  padding-left: 40px;
+}
+
+.exp-timeline::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+}
+
+.exp-item {
+  position: relative;
+  padding: 40px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  margin-bottom: 2px;
+  transition: border-color 0.3s;
+}
+
+.exp-item:hover { border-color: rgba(249,115,22,0.3); }
+
+.exp-item::before {
+  content: '';
+  position: absolute;
+  left: -44px; top: 44px;
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(249,115,22,0.5);
+}
+
+.exp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.exp-company {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  letter-spacing: 1px;
+}
+
+.exp-role {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.exp-period {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted2);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  height: fit-content;
+}
+
+.exp-desc {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+.exp-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.exp-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+}
+
+.exp-badge {
+  background: rgba(249,115,22,0.1);
+  border: 1px solid rgba(249,115,22,0.3);
+  color: var(--accent);
+  padding: 4px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+/* CERTIFICATIONS */
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.cert-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.cert-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+}
+
+.cert-card::after {
+  content: '✓';
+  position: absolute;
+  top: 20px; right: 20px;
+  width: 28px; height: 28px;
+  background: var(--accent);
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.cert-logo { font-size: 32px; margin-bottom: 20px; }
+
+.cert-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.cert-issuer {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.cert-date {
+  font-size: 12px;
+  color: var(--muted2);
+}
+
+/* CONTACT */
+.contact-section {
+  background: var(--surface);
+  text-align: center;
+}
+
+.contact-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 8vw, 100px);
+  letter-spacing: 3px;
+  line-height: 1;
+  margin-bottom: 24px;
+}
+
+.contact-title span { color: var(--accent); }
+
+.contact-subtitle {
+  font-size: 16px;
+  color: var(--muted);
+  margin-bottom: 60px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 80px;
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 16px 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  transition: all 0.3s;
+}
+
+.contact-link:hover {
+  border-color: var(--accent);
+  color: var(--text);
+  background: rgba(249,115,22,0.05);
+}
+
+.contact-link-icon {
+  font-size: 18px;
+}
+
+/* FOOTER */
+footer {
+  padding: 40px 60px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted2);
+  letter-spacing: 2px;
+}
+
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  color: var(--muted2);
+  letter-spacing: 3px;
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scrollLine {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* REVEAL ON SCROLL */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 20px 24px; }
+  .nav-links { display: none; }
+  .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; }
+  .hero-image { display: none; }
+  section { padding: 80px 24px; }
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .cert-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 16px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">EAS</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="border-top: none; padding-top: 120px;">
+  <div class="hero-content">
+    <div class="hero-tag">Available for Remote Opportunities</div>
+    <h1 class="hero-name">
+      Erhan<br>
+      <span>Adi</span>
+      Santoso
+    </h1>
+    <p class="hero-tagline">
+      <strong>Sales Professional</strong> · <strong>Web3 Enthusiast</strong> · <strong>Remote Ready</strong><br><br>
+      8 years building customer bases from scratch. 30 cold visits per day. Zero leads given. Now bringing street-tested skills to the global market.
+    </p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn-primary">Get In Touch</a>
+      <a href="#experience" class="btn-secondary">View Experience</a>
+    </div>
+  </div>
+
+  <div class="hero-image">
+    <div class="hero-image-frame">
+      <img src="https://i.imgur.com/cOXOkr3.jpeg" alt="Erhan Adi Santoso" class="hero-img" id="profileImg"
+        onerror="this.style.background='linear-gradient(135deg, #1a1a1a, #0f0f0f)'; this.style.display='block';">
+      <div class="hero-stats">
+        <div class="stat-box">
+          <span class="stat-num">8+</span>
+          <span class="stat-label">Years Sales</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num">107%</span>
+          <span class="stat-label">Peak Target</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num">30+</span>
+          <span class="stat-label">Daily Visits</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">About Me</div>
+  <h2 class="section-title reveal">Who I Am</h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I'm a results-driven <strong>sales professional</strong> with 8+ years of field experience in Indonesia's FMCG industry. I built customer bases from scratch — no leads, no shortcuts — just discipline, consistency, and the ability to connect with people.</p>
+      <p>Now I'm transitioning into the <strong>global remote market</strong>, bringing those same street-tested skills to the digital economy. I'm passionate about <strong>Web3 technology</strong>, actively exploring blockchain and DeFi, and certified in HubSpot CRM.</p>
+      <p>Based in <strong>Palangkaraya, Indonesia</strong>. Open to remote roles worldwide in sales, business development, or AI-related positions.</p>
+    </div>
+    <div class="about-numbers reveal">
+      <div class="about-num-card">
+        <span class="about-num">8+</span>
+        <div class="about-num-label">Years in field sales</div>
+      </div>
+      <div class="about-num-card">
+        <span class="about-num">30+</span>
+        <div class="about-num-label">Cold visits per day</div>
+      </div>
+      <div class="about-num-card">
+        <span class="about-num">107%</span>
+        <div class="about-num-label">Peak target achievement</div>
+      </div>
+      <div class="about-num-card">
+        <span class="about-num">3+</span>
+        <div class="about-num-label">Companies served</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="skills-section">
+  <div class="section-label">What I Bring</div>
+  <h2 class="section-title reveal">Core Skills</h2>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="skill-icon">🎯</div>
+      <div class="skill-name">Cold Outreach</div>
+      <div class="skill-desc">8 years of daily cold canvassing with zero warm leads. Comfortable initiating conversations with complete strangers.</div>
+      <div class="skill-level"><div class="skill-level-fill" style="width: 95%;"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🛡️</div>
+      <div class="skill-name">Objection Handling</div>
+      <div class="skill-desc">Faced hundreds of rejections weekly for 8 years. Built a systematic approach to understanding and addressing concerns.</div>
+      <div class="skill-level"><div class="skill-level-fill" style="width: 92%;"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🤝</div>
+      <div class="skill-name">Relationship Building</div>
+      <div class="skill-desc">Turned repeated rejections into loyal, recurring accounts. Built trust with hundreds of SMB owners across Indonesia.</div>
+      <div class="skill-level"><div class="skill-level-fill" style="width: 90%;"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">📊</div>
+      <div class="skill-name">CRM & Sales Tools</div>
+      <div class="skill-desc">HubSpot CRM certified. Daily use of SFA mobile tools for pipeline tracking, visit reporting, and target monitoring.</div>
+      <div class="skill-level"><div class="skill-level-fill" style="width: 78%;"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🤖</div>
+      <div class="skill-name">AI Tools</div>
+      <div class="skill-desc">Active daily user of Claude and ChatGPT for research, writing, and workflow automation. Passionate about AI applications.</div>
+      <div class="skill-level"><div class="skill-level-fill" style="width: 72%;"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">⛓️</div>
+      <div class="skill-name">Web3 & Blockchain</div>
+      <div class="skill-desc">Self-studying crypto ecosystems, DeFi fundamentals, and blockchain technology. Passionate about decentralized future.</div>
+      <div class="skill-level"><div class="skill-level-fill" style="width: 55%;"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">Career Journey</div>
+  <h2 class="section-title reveal">Experience</h2>
+  <div class="exp-timeline">
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div>
+          <div class="exp-company">PT Surya Madistrindo</div>
+          <div class="exp-role">Salesman Task Force — TMC</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+          <div class="exp-period">Mar 2024 — May 2025</div>
+          <div class="exp-badge">🏆 Top Performer Q2 2024</div>
+        </div>
+      </div>
+      <p class="exp-desc">Conducted daily canvassing to 30+ retail outlets per day across assigned territory — zero leads provided. Managed product top-up, in-store merchandising, and built lasting relationships with SMB store owners. Exceeded monthly targets consistently, achieving 107% in Q2 2024.</p>
+      <div class="exp-tags">
+        <span class="exp-tag">Cold Canvassing</span>
+        <span class="exp-tag">Retail Sales</span>
+        <span class="exp-tag">Merchandising</span>
+        <span class="exp-tag">SFA Tools</span>
+        <span class="exp-tag">FMCG</span>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div>
+          <div class="exp-company">PT Surya Madistrindo</div>
+          <div class="exp-role">Operator</div>
+        </div>
+        <div class="exp-period">Feb 2022 — Apr 2024</div>
+      </div>
+      <p class="exp-desc">Managed product distribution operations across Central Kalimantan territory. Conducted market analysis and monitored retail activity. Coordinated with field sales team to ensure smooth and timely distribution across 180+ area offices network.</p>
+      <div class="exp-tags">
+        <span class="exp-tag">Distribution</span>
+        <span class="exp-tag">Market Analysis</span>
+        <span class="exp-tag">Operations</span>
+        <span class="exp-tag">Team Coordination</span>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div>
+          <div class="exp-company">PT Korea Tomorrow & Global (KT&G)</div>
+          <div class="exp-role">Salesman</div>
+        </div>
+        <div class="exp-period">Apr 2018 — Dec 2021</div>
+      </div>
+      <p class="exp-desc">Built and managed independent customer base through cold canvassing across assigned territory. Conducted market analysis, identified new sales opportunities, and demonstrated team leadership in coordinating sales activities. Consistently met and exceeded monthly targets over 3+ years.</p>
+      <div class="exp-tags">
+        <span class="exp-tag">B2B Sales</span>
+        <span class="exp-tag">Market Analysis</span>
+        <span class="exp-tag">Team Leadership</span>
+        <span class="exp-tag">Tobacco Industry</span>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div>
+          <div class="exp-company">Yakult Indonesia Persada</div>
+          <div class="exp-role">Retail Sales</div>
+        </div>
+        <div class="exp-period">Jun 2017 — Dec 2017</div>
+      </div>
+      <p class="exp-desc">Conducted direct sales of Yakult products to retail outlets across Palangkaraya. Built relationships with store owners and ensured consistent product availability and visibility at point of sale.</p>
+      <div class="exp-tags">
+        <span class="exp-tag">Retail Sales</span>
+        <span class="exp-tag">FMCG</span>
+        <span class="exp-tag">Direct Sales</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications" style="background: var(--surface);">
+  <div class="section-label">Credentials</div>
+  <h2 class="section-title reveal">Certifications</h2>
+  <div class="cert-grid">
+    <div class="cert-card reveal">
+      <div class="cert-logo">🟠</div>
+      <div class="cert-name">HubSpot Integrations Foundations</div>
+      <div class="cert-issuer">HubSpot Academy</div>
+      <div class="cert-date">May 2026 · Score: 83%</div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-logo">⛓️</div>
+      <div class="cert-name">Web3 & Blockchain Technology</div>
+      <div class="cert-issuer">Self-Directed Learning</div>
+      <div class="cert-date">2024 — Present · Ongoing</div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-logo">🎓</div>
+      <div class="cert-name">Bachelor's in Economics</div>
+      <div class="cert-issuer">Universitas Terbuka</div>
+      <div class="cert-date">2022 — Present · In Progress</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div class="section-label" style="justify-content: center;">Let's Connect</div>
+  <h2 class="contact-title reveal">
+    Open To<br><span>Opportunities</span>
+  </h2>
+  <p class="contact-subtitle reveal">Available for remote SDR, BDR, Sales Executive, AI Trainer, or Web3 sales roles worldwide.</p>
+  <div class="contact-links reveal">
+    <a href="mailto:erhansantos20@gmail.com" class="contact-link">
+      <span class="contact-link-icon">✉️</span>
+      erhansantos20@gmail.com
+    </a>
+    <a href="https://wa.me/6282148386543" class="contact-link" target="_blank">
+      <span class="contact-link-icon">💬</span>
+      +62 821-4838-6543
+    </a>
+    <a href="https://www.linkedin.com/in/erhan-adi-santoso-087006129/" class="contact-link" target="_blank">
+      <span class="contact-link-icon">💼</span>
+      LinkedIn Profile
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-text">© 2026 Erhan Adi Santoso · Palangkaraya, Indonesia</div>
+  <div class="footer-logo">EAS</div>
+  <div class="footer-text">Built with passion · Remote Ready 🌏</div>
+</footer>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mouseX = 0, mouseY = 0;
+let ringX = 0, ringY = 0;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  cursor.style.left = mouseX - 4 + 'px';
+  cursor.style.top = mouseY - 4 + 'px';
+});
+
+function animateRing() {
+  ringX += (mouseX - ringX - 16) * 0.15;
+  ringY += (mouseY - ringY - 16) * 0.15;
+  ring.style.left = ringX + 'px';
+  ring.style.top = ringY + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+// Hover effect on links
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform = 'scale(3)';
+    ring.style.transform = 'scale(1.5)';
+    ring.style.borderColor = 'rgba(249,115,22,0.8)';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.transform = 'scale(1)';
+    ring.style.transform = 'scale(1)';
+    ring.style.borderColor = 'rgba(249,115,22,0.5)';
+  });
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        entry.target.classList.add('visible');
+      }, i * 100);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Skill bar animation on scroll
+const skillObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.skill-level-fill').forEach(bar => {
+        bar.style.width = bar.style.width;
+      });
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.skill-card').forEach(el => skillObserver.observe(el));
+</script>
+
+</body>
+</html>
